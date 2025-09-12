@@ -14,6 +14,10 @@ export default class Users {
   @Column({ length: 30, nullable: true })
   last_name: string;
 
-  @Column({ select: false, nullable: false })
+  @Column({ nullable: true })
+  age: number;
+
+  // @Column({ select: false, nullable: false })
+  @Column({ nullable: false })
   password: string;
 }
