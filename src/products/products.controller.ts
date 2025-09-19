@@ -8,6 +8,7 @@ import {
   Param,
   Request,
   UseGuards,
+  HttpException,
 } from '@nestjs/common';
 
 import { ProductsService } from './products.service';
@@ -15,59 +16,65 @@ import { CreateProductDto } from './dto/create-product.dto';
 import { UpdateProductDto } from './dto/update-product.dto';
 import { JwtAuthGuard } from 'src/jwt-auth/jwt-auth.guard';
 import userGuard from 'src/users/dto/userGuard';
+import { I18n, I18nContext } from 'nestjs-i18n';
 
 @Controller('products')
 export class ProductsController {
   constructor(private readonly productsService: ProductsService) {}
 
-  /**
-   * Create a new product (auth required)
-   */
+  /** Create (auth) */
   @Post()
   @UseGuards(JwtAuthGuard)
-  create(@Body() createProductDto: CreateProductDto, @Request() req) {
+  async create(
+    @Body() createProductDto: CreateProductDto,
+    @Request() req,
+    @I18n() i18n: I18nContext,
+  ) {
     const user: userGuard = req.user;
     createProductDto.user = user;
-    return this.productsService.create(createProductDto);
+    const data = await this.productsService.create(createProductDto);
+    return { message: i18n.t('tr.products.created'), data };
   }
 
-  /**
-   * Get all products
-   */
+  /** Get all */
   @Get()
-  findAll() {
-    return this.productsService.findAll();
+  async findAll(@I18n() i18n: I18nContext) {
+    const data = await this.productsService.findAll();
+    return { message: i18n.t('tr.products.list'), data };
   }
 
-  /**
-   * Get one product by ID
-   */
+  /** Get by ID */
   @Get(':id')
-  findOne(@Param('id') id: number) {
-    return this.productsService.findOne(id);
+  async findOne(@Param('id') id: number, @I18n() i18n: I18nContext) {
+    const data = await this.productsService.findOne(id);
+    if (!data) throw new HttpException(i18n.t('tr.products.notFound'), 404);
+    return data;
   }
 
-  /**
-   * Update a product (auth required)
-   */
+  /** Update (auth) */
   @Put(':id')
   @UseGuards(JwtAuthGuard)
-  update(
+  async update(
     @Param('id') id: number,
     @Body() updateProductDto: UpdateProductDto,
     @Request() req,
+    @I18n() i18n: I18nContext,
   ) {
     updateProductDto.user = req.user;
-    return this.productsService.update(id, updateProductDto);
+    const data = await this.productsService.update(id, updateProductDto);
+    return { message: i18n.t('tr.products.updated'), data };
   }
 
-  /**
-   * Delete a product (auth required)
-   */
+  /** Delete (auth) */
   @Delete(':id')
   @UseGuards(JwtAuthGuard)
-  remove(@Param('id') id: number, @Request() req) {
+  async remove(
+    @Param('id') id: number,
+    @Request() req,
+    @I18n() i18n: I18nContext,
+  ) {
     const user: userGuard = req.user;
-    return this.productsService.remove(id, user);
+    await this.productsService.remove(id, user);
+    return { message: i18n.t('tr.products.deleted') };
   }
 }

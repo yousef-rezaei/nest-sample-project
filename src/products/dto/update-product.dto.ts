@@ -1,9 +1,5 @@
 import { PartialType } from '@nestjs/mapped-types';
 import { CreateProductDto } from './create-product.dto';
 
-/**
- * UpdateProductDto
- * Inherits all fields & validations from CreateProductDto
- * but makes them optional (so user can update only one field if needed)
- */
+// Fields become optional; i18n messages from CreateProductDto still apply.
 export class UpdateProductDto extends PartialType(CreateProductDto) {}

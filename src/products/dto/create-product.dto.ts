@@ -5,38 +5,47 @@ import {
   IsString,
   MinLength,
 } from 'class-validator';
+import { i18nValidationMessage } from 'nestjs-i18n';
 import userGuard from 'src/users/dto/userGuard';
 
 export class CreateProductDto {
-  /**
-   * Product title
-   * Required, must be a string
-   */
+  // required string
   @IsString()
-  @IsNotEmpty()
+  @IsNotEmpty({
+    message: i18nValidationMessage('forms.validation.required', {
+      field: 'Title',
+    }),
+  })
   title: string;
 
-  /**
-   * Product description
-   * Required, must be a string with at least 10 characters
-   */
+  // required string, min length 10
   @IsString()
-  @IsNotEmpty()
-  @MinLength(10)
+  @IsNotEmpty({
+    message: i18nValidationMessage('forms.validation.required', {
+      field: 'Description',
+    }),
+  })
+  @MinLength(10, {
+    message: i18nValidationMessage('forms.validation.minLength', {
+      field: 'Description',
+      min: 10,
+    }),
+  })
   description: string;
 
-  /**
-   * Product price
-   * Optional, must be a number if provided
-   */
-  @IsNumber()
+  // optional number
+  @IsNumber(
+    {},
+    {
+      message: i18nValidationMessage('forms.validation.number', {
+        field: 'Price',
+      }),
+    },
+  )
   @IsOptional()
   price?: number;
 
-  /**
-   * User who creates the product
-   * Optional, injected from request.user (not from client input!)
-   */
+  // optional, injected from request.user (not client input)
   @IsOptional()
   user?: userGuard;
 }

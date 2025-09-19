@@ -1,0 +1,170 @@
+{
+  "app": {
+    "name": "Nest Sample",
+    "description": "A sample service with authentication, products and users."
+  },
+  "navbar": {
+    "home": "Home",
+    "products": "Products",
+    "users": "Users",
+    "login": "Login",
+    "logout": "Logout",
+    "register": "Register",
+    "profile": "Profile",
+    "settings": "Settings",
+    "language": "Language"
+  },
+  "footer": {
+    "rights": "All rights reserved.",
+    "madeWith": "Made with ❤",
+    "links": { "privacy": "Privacy", "terms": "Terms", "contact": "Contact" }
+  },
+  "buttons": {
+    "save": "Save",
+    "cancel": "Cancel",
+    "delete": "Delete",
+    "edit": "Edit",
+    "create": "Create",
+    "update": "Update",
+    "search": "Search",
+    "close": "Close",
+    "confirm": "Confirm",
+    "retry": "Retry"
+  },
+  "forms": {
+    "labels": {
+      "email": "Email",
+      "password": "Password",
+      "passwordConfirm": "Confirm password",
+      "firstName": "First name",
+      "lastName": "Last name",
+      "age": "Age",
+      "title": "Title",
+      "description": "Description",
+      "price": "Price",
+      "stock": "Stock",
+      "status": "Status"
+    },
+    "placeholders": {
+      "search": "Type to search…",
+      "email": "you@example.com",
+      "password": "Your password"
+    },
+    "validation": {
+      "required": "{field} is required.",
+      "minLength": "{field} must be at least {min} characters.",
+      "maxLength": "{field} must be at most {max} characters.",
+      "between": "{field} must be between {min} and {max}.",
+      "email": "Please enter a valid email.",
+      "number": "{field} must be a number.",
+      "min": "{field} must be greater than or equal to {min}.",
+      "max": "{field} must be less than or equal to {max}.",
+      "oneOf": "{field} must be one of the allowed values.",
+      "unique": "{field} is already taken.",
+      "regex": "{field} format is invalid."
+    }
+  },
+  "auth": {
+    "login": {
+      "title": "Sign in",
+      "rememberMe": "Remember me",
+      "success": "You are signed in.",
+      "invalid": "Invalid email or password.",
+      "forbidden": "Your account does not have access.",
+      "locked": "Account is locked.",
+      "2faSent": "A one-time code was sent to your email.",
+      "otp": {
+        "enter": "Enter the 6-digit code",
+        "invalid": "The code is invalid.",
+        "expired": "The code has expired.",
+        "resent": "A new code was sent."
+      }
+    },
+    "register": {
+      "title": "Create account",
+      "success": "Registration successful. Please sign in.",
+      "emailInUse": "This email is already in use.",
+      "passwordWeak": "Password is too weak."
+    },
+    "logout": { "success": "You are signed out." },
+    "jwt": {
+      "invalid": "Invalid token.",
+      "expired": "Your session has expired.",
+      "missing": "Authorization token is missing."
+    }
+  },
+  "products": {
+    "title": "Products",
+    "empty": "No products found.",
+    "list": "Product list",
+    "details": "Product details",
+    "created": "Product created successfully.",
+    "updated": "Product updated successfully.",
+    "deleted": "Product deleted.",
+    "restored": "Product restored.",
+    "createFailed": "Could not create product.",
+    "updateFailed": "Could not update product.",
+    "deleteFailed": "Could not delete product.",
+    "notFound": "Product not found.",
+    "fields": {
+      "id": "ID",
+      "title": "Title",
+      "description": "Description",
+      "price": "Price",
+      "stock": "Stock",
+      "status": "Status",
+      "createdAt": "Created at",
+      "updatedAt": "Updated at"
+    },
+    "filters": {
+      "search": "Search products",
+      "minPrice": "Min price",
+      "maxPrice": "Max price",
+      "inStock": "In stock only"
+    }
+  },
+  "users": {
+    "title": "Users",
+    "empty": "No users found.",
+    "created": "User created.",
+    "updated": "User updated.",
+    "deleted": "User deleted.",
+    "notFound": "User not found.",
+    "fields": {
+      "id": "ID",
+      "firstName": "First name",
+      "lastName": "Last name",
+      "email": "Email",
+      "age": "Age",
+      "role": "Role",
+      "createdAt": "Created at"
+    }
+  },
+  "logger": {
+    "requestStart": "Request {method} {url} started.",
+    "requestEnd": "Request {method} {url} finished in {ms} ms."
+  },
+  "errors": {
+    "400": "Bad request.",
+    "401": "Unauthorized.",
+    "403": "Forbidden.",
+    "404": "Not found.",
+    "409": "Conflict.",
+    "422": "Unprocessable entity.",
+    "429": "Too many requests.",
+    "500": "Internal server error.",
+    "503": "Service unavailable.",
+    "unknown": "An unknown error occurred."
+  },
+  "pagination": {
+    "prev": "Previous",
+    "next": "Next",
+    "showing": "Showing {from}–{to} of {total}"
+  },
+  "misc": {
+    "loading": "Loading…",
+    "noData": "No data to display.",
+    "languageNames": { "en": "English", "fa": "Persian", "fr": "French" },
+    "units": { "currency": "€", "items": "items" }
+  }
+}

@@ -1,0 +1,171 @@
+{
+  "hello": "hello",
+  "app": {
+    "name": "Exemple Nest",
+    "description": "Un service exemple avec authentification, produits et utilisateurs."
+  },
+  "navbar": {
+    "home": "Accueil",
+    "products": "Produits",
+    "users": "Utilisateurs",
+    "login": "Connexion",
+    "logout": "Déconnexion",
+    "register": "Inscription",
+    "profile": "Profil",
+    "settings": "Paramètres",
+    "language": "Langue"
+  },
+  "footer": {
+    "rights": "Tous droits réservés.",
+    "madeWith": "Fait avec ❤",
+    "links": { "privacy": "Confidentialité", "terms": "Conditions", "contact": "Contact" }
+  },
+  "buttons": {
+    "save": "Enregistrer",
+    "cancel": "Annuler",
+    "delete": "Supprimer",
+    "edit": "Modifier",
+    "create": "Créer",
+    "update": "Mettre à jour",
+    "search": "Rechercher",
+    "close": "Fermer",
+    "confirm": "Confirmer",
+    "retry": "Réessayer"
+  },
+  "forms": {
+    "labels": {
+      "email": "E-mail",
+      "password": "Mot de passe",
+      "passwordConfirm": "Confirmer le mot de passe",
+      "firstName": "Prénom",
+      "lastName": "Nom",
+      "age": "Âge",
+      "title": "Titre",
+      "description": "Description",
+      "price": "Prix",
+      "stock": "Stock",
+      "status": "Statut"
+    },
+    "placeholders": {
+      "search": "Saisir pour rechercher…",
+      "email": "vous@exemple.com",
+      "password": "Votre mot de passe"
+    },
+    "validation": {
+      "required": "{field} est obligatoire.",
+      "minLength": "{field} doit contenir au moins {min} caractères.",
+      "maxLength": "{field} doit contenir au plus {max} caractères.",
+      "between": "{field} doit être entre {min} et {max}.",
+      "email": "Veuillez entrer un e-mail valide.",
+      "number": "{field} doit être un nombre.",
+      "min": "{field} doit être supérieur ou égal à {min}.",
+      "max": "{field} doit être inférieur ou égal à {max}.",
+      "oneOf": "{field} doit être l’une des valeurs autorisées.",
+      "unique": "{field} est déjà utilisé.",
+      "regex": "Le format de {field} est invalide."
+    }
+  },
+  "auth": {
+    "login": {
+      "title": "Se connecter",
+      "rememberMe": "Se souvenir de moi",
+      "success": "Connexion réussie.",
+      "invalid": "E-mail ou mot de passe incorrect.",
+      "forbidden": "Votre compte n’a pas l’accès.",
+      "locked": "Le compte est verrouillé.",
+      "2faSent": "Un code à usage unique a été envoyé à votre e-mail.",
+      "otp": {
+        "enter": "Saisissez le code à 6 chiffres",
+        "invalid": "Code invalide.",
+        "expired": "Le code a expiré.",
+        "resent": "Un nouveau code a été envoyé."
+      }
+    },
+    "register": {
+      "title": "Créer un compte",
+      "success": "Inscription réussie. Veuillez vous connecter.",
+      "emailInUse": "Cet e-mail est déjà utilisé.",
+      "passwordWeak": "Le mot de passe est trop faible."
+    },
+    "logout": { "success": "Déconnexion réussie." },
+    "jwt": {
+      "invalid": "Jeton invalide.",
+      "expired": "Votre session a expiré.",
+      "missing": "Le jeton d’autorisation est manquant."
+    }
+  },
+  "products": {
+    "title": "Produits",
+    "empty": "Aucun produit trouvé.",
+    "list": "Liste des produits",
+    "details": "Détails du produit",
+    "created": "Produit créé avec succès.",
+    "updated": "Produit mis à jour avec succès.",
+    "deleted": "Produit supprimé.",
+    "restored": "Produit restauré.",
+    "createFailed": "Échec de création du produit.",
+    "updateFailed": "Échec de mise à jour du produit.",
+    "deleteFailed": "Échec de suppression du produit.",
+    "notFound": "Produit introuvable.",
+    "fields": {
+      "id": "ID",
+      "title": "Titre",
+      "description": "Description",
+      "price": "Prix",
+      "stock": "Stock",
+      "status": "Statut",
+      "createdAt": "Créé le",
+      "updatedAt": "Mis à jour le"
+    },
+    "filters": {
+      "search": "Rechercher des produits",
+      "minPrice": "Prix min",
+      "maxPrice": "Prix max",
+      "inStock": "En stock seulement"
+    }
+  },
+  "users": {
+    "title": "Utilisateurs",
+    "empty": "Aucun utilisateur trouvé.",
+    "created": "Utilisateur créé.",
+    "updated": "Utilisateur mis à jour.",
+    "deleted": "Utilisateur supprimé.",
+    "notFound": "Utilisateur introuvable.",
+    "fields": {
+      "id": "ID",
+      "firstName": "Prénom",
+      "lastName": "Nom",
+      "email": "E-mail",
+      "age": "Âge",
+      "role": "Rôle",
+      "createdAt": "Créé le"
+    }
+  },
+  "logger": {
+    "requestStart": "Requête {method} {url} démarrée.",
+    "requestEnd": "Requête {method} {url} terminée en {ms} ms."
+  },
+  "errors": {
+    "400": "Requête incorrecte.",
+    "401": "Non autorisé.",
+    "403": "Interdit.",
+    "404": "Introuvable.",
+    "409": "Conflit.",
+    "422": "Entité non traitable.",
+    "429": "Trop de requêtes.",
+    "500": "Erreur interne du serveur.",
+    "503": "Service indisponible.",
+    "unknown": "Une erreur inconnue s’est produite."
+  },
+  "pagination": {
+    "prev": "Précédent",
+    "next": "Suivant",
+    "showing": "Affichage de {from}–{to} sur {total}"
+  },
+  "misc": {
+    "loading": "Chargement…",
+    "noData": "Aucune donnée à afficher.",
+    "languageNames": { "en": "Anglais", "fa": "Persan", "fr": "Français" },
+    "units": { "currency": "€", "items": "articles" }
+  }
+}

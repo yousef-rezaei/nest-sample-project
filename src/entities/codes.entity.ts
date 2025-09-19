@@ -4,7 +4,7 @@ import { Column, Entity, PrimaryGeneratedColumn } from 'typeorm';
 export default class Codes {
   @PrimaryGeneratedColumn()
   id: number;
-  @Column({  nullable: false })
+  @Column({ nullable: false })
   email: string;
   @Column({ nullable: false })
   code: number;

@@ -7,8 +7,27 @@ import { LoggerMiddleware } from './logger/logger.middleware';
 import { TypeOrmModule } from '@nestjs/typeorm';
 import { AuthModule } from './auth/auth.module';
 import Users from './entities/user.entity';
+import {
+  AcceptLanguageResolver,
+  HeaderResolver,
+  I18nModule,
+  QueryResolver,
+} from 'nestjs-i18n';
+import path from 'path';
 @Module({
   imports: [
+    I18nModule.forRoot({
+      fallbackLanguage: 'en',
+      loaderOptions: {
+        path: path.join(__dirname, '/i18n/'),
+        watch: true,
+      },
+      resolvers: [
+        new HeaderResolver(['x-custom-lang']),
+        new QueryResolver(['lang']),
+        new AcceptLanguageResolver(),
+      ],
+    }),
     TypeOrmModule.forRoot({
       type: 'postgres',
       host: 'localhost',
