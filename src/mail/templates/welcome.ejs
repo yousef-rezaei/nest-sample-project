@@ -1,0 +1,103 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <title>Welcome to <%= appName || 'MyApp' %></title>
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <!-- Basic resets for email clients -->
+  <style>
+    /* Preheader text hidden in inbox preview */
+    .preheader { display:none!important; visibility:hidden; opacity:0; color:transparent; height:0; width:0; overflow:hidden; mso-hide:all; }
+    /* Mobile tweaks */
+    @media (max-width: 600px) {
+      .container { width: 100% !important; }
+      .p-24 { padding: 16px !important; }
+      .card { border-radius: 10px !important; }
+    }
+    /* Dark mode hint (supported in some clients) */
+    @media (prefers-color-scheme: dark) {
+      body, .bg { background:#0b1220 !important; color:#e5e7eb !important; }
+      .card { background:#172033 !important; color:#e5e7eb !important; }
+      a.button { background: <%= brandColor || '#4e73df' %> !important; color:#fff !important; }
+      a.link { color: <%= brandColor || '#4e73df' %> !important; }
+    }
+  </style>
+</head>
+<body style="margin:0; padding:0; background:#f4f6f8; color:#0f172a; font-family: -apple-system,BlinkMacSystemFont,'Segoe UI',Roboto,Inter,Arial,sans-serif;">
+  <!-- Preheader (shows in inbox preview) -->
+  <div class="preheader">
+    You’re in! Welcome to <%= appName || 'MyApp' %>. Let’s get you started.
+  </div>
+
+  <table role="presentation" cellpadding="0" cellspacing="0" border="0" width="100%" class="bg" style="background:#f4f6f8;">
+    <tr>
+      <td align="center" style="padding: 24px;">
+        <!-- Container -->
+        <table role="presentation" cellpadding="0" cellspacing="0" border="0" width="600" class="container" style="width:600px; max-width:600px;">
+          <!-- Header / Logo -->
+          <tr>
+            <td style="text-align:center; padding: 8px 24px 0;">
+              <a href="<%= baseUrl || '#' %>" style="text-decoration:none; color:inherit;">
+                <div style="font-size:22px; font-weight:700;"><%= appName || 'MyApp' %></div>
+              </a>
+            </td>
+          </tr>
+
+          <!-- Card -->
+          <tr>
+            <td class="card" style="background:#ffffff; border-radius:14px; padding: 28px; box-shadow:0 6px 18px rgba(16,24,40,.06);">
+              <h1 style="margin:0 0 10px; font-size:24px; line-height:1.3; color:#111827;">
+                Welcome<% if (name) { %>, <%= name %><% } %>! 🎉
+              </h1>
+
+              <p style="margin:0 0 8px; font-size:15px; line-height:1.7; color:#334155;">
+                Thanks for joining <strong><%= appName || 'MyApp' %></strong>. We’re excited to have you on board.
+              </p>
+
+              <p style="margin:0 0 22px; font-size:15px; line-height:1.7; color:#334155;">
+                Your account has been created. You can jump right in and explore your dashboard.
+              </p>
+
+              <!-- CTA Button -->
+              <table role="presentation" cellpadding="0" cellspacing="0" border="0" style="margin: 0 0 18px;">
+                <tr>
+                  <td bgcolor="<%= brandColor || '#4e73df' %>" style="border-radius:10px; text-align:center;">
+                    <a href="<%= ctaUrl || (baseUrl ? baseUrl + '/dashboard' : '#') %>"
+                       class="button"
+                       style="display:inline-block; padding:12px 20px; font-weight:600; text-decoration:none; color:#ffffff; background:<%= brandColor || '#4e73df' %>; border-radius:10px;">
+                      Go to Dashboard
+                    </a>
+                  </td>
+                </tr>
+              </table>
+
+              <p style="margin:0 0 6px; font-size:13px; color:#64748b;">
+                If the button doesn’t work, paste this link into your browser:
+              </p>
+              <p style="margin:0 0 22px; font-size:13px;">
+                <a class="link" href="<%= ctaUrl || (baseUrl ? baseUrl + '/dashboard' : '#') %>" style="color:<%= brandColor || '#4e73df' %>;">
+                  <%= ctaUrl || (baseUrl ? baseUrl + '/dashboard' : '#') %>
+                </a>
+              </p>
+
+              <hr style="border:none; border-top:1px solid #e5e7eb; margin: 14px 0 18px;">
+
+              <p style="margin:0; font-size:13px; color:#64748b;">
+                Need help? <a class="link" href="<%= helpUrl || 'mailto:support@yourdomain.tld' %>" style="color:<%= brandColor || '#4e73df' %>;">Contact support</a>.
+              </p>
+            </td>
+          </tr>
+
+          <!-- Footer -->
+          <tr>
+            <td style="text-align:center; padding: 14px 8px; font-size:12px; color:#94a3b8;">
+              © <%= (new Date()).getFullYear() %> <%= appName || 'MyApp' %>. All rights reserved.
+            </td>
+          </tr>
+        </table>
+        <!-- /Container -->
+      </td>
+    </tr>
+  </table>
+</body>
+</html>

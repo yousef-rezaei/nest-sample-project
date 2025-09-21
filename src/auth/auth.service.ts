@@ -7,7 +7,7 @@ import { JwtService } from '@nestjs/jwt';
 import Codes from 'src/entities/codes.entity';
 import { Repository } from 'typeorm';
 import { InjectRepository } from '@nestjs/typeorm';
-import { access } from 'fs';
+import { MailService } from 'src/mail/mail.service'; // ← requires MailModule
 
 @Injectable()
 export class AuthService {
@@ -15,86 +15,84 @@ export class AuthService {
     private readonly userService: UsersService,
     private readonly jwtService: JwtService,
     @InjectRepository(Codes)
-    private code_repository: Repository<Codes>,
+    private readonly codeRepo: Repository<Codes>,
+    private readonly mailService: MailService, // remove if you’re not using email yet
   ) {}
-  async register(registerAuthDto: RegisterAuthDto) {
-    const user = await this.userService.findUserByEmail(registerAuthDto.email);
-    if (user) {
-      throw new HttpException('User already exists', 400);
+
+  async register(dto: RegisterAuthDto) {
+    const email = dto.email.trim().toLowerCase();
+    const user = await this.userService.findUserByEmail(email);
+    if (user) throw new HttpException('User already exists', 400);
+
+    dto.email = email;
+    dto.password = await bcrypt.hash(dto.password, 10);
+    const created = await this.userService.createUser(dto);
+
+    try {
+      await this.mailService.sendWelcome(email, (created as any)?.first_name);
+    } catch (e) {
+      console.error('[MAIL][WELCOME] ERROR', e?.response || e?.message || e);
+      // optionally ignore or rethrow based on your policy
     }
-    registerAuthDto.password = await bcrypt.hash(registerAuthDto.password, 10);
-    return await this.userService.createUser(registerAuthDto);
+
+    return created;
   }
-  async login(loginAuthDto: LoginAuthDto) {
-    const user = await this.userService.findUserByEmail(loginAuthDto.email);
-    if (!user) {
-      throw new HttpException('User not found', 404);
+
+  async login(dto: LoginAuthDto) {
+    const email = dto.email.trim().toLowerCase();
+    const user = await this.userService.findUserByEmail(email);
+    if (!user) throw new HttpException('User not found', 404);
+
+    // If client sent an OTP, verify it
+    if (dto.code !== undefined && dto.code !== null) {
+      const codeValue = Number(dto.code);
+      if (Number.isNaN(codeValue)) throw new HttpException('Invalid code', 400);
+
+      const rec = await this.codeRepo.findOne({
+        where: { email, code: codeValue, is_used: false },
+      });
+      if (!rec) throw new HttpException('Code is not valid', 400);
+
+      // mark used
+      rec.is_used = true;
+      await this.codeRepo.save(rec);
+
+      const accessToken = this.jwtService.sign({
+        sub: user.id,
+        email: user.email,
+      });
+      return { message: 'Login successful', accessToken };
     }
-    // const isPasswordMath = await bcrypt.compare(
-    //   loginAuthDto.password,
-    //   user.password,
-    // );
-    // console.log(isPasswordMath);
-    // if (!isPasswordMath) {
-    //   throw new HttpException('Wrong password', 400);
-    // }
-    if (loginAuthDto.code) {
-      // check if code is exist in database and is valid
-      const checkCode = await this.code_repository.findOne({
-        where: {
-          code: loginAuthDto.code,
-          email: loginAuthDto.email,
-          is_used: false,
-        },
-      });
-      if (checkCode) {
-        await this.code_repository.update(checkCode, { is_used: true });
-        const accessToken = this.jwtService.sign({
-          sub: user.id,
-          email: user.email,
-        });
-        return {
-          message: 'Login successful',
-          accessToken,
-        };
-      } else {
-        throw new HttpException('Code is not valid', 400);
-      }
-    } else {
-      //generate 5 digit code that is not exist in database
-      const otp = await this.generateOtpCode();
-      // Save otp code in database
-      this.code_repository.save({
-        code: otp,
-        email: loginAuthDto.email,
-      });
-      // send otp code to user
-      return { code: otp };
+
+    // Otherwise, generate & send a fresh OTP
+    const otp = await this.generateOtpCode();
+
+    await this.codeRepo.save({
+      email,
+      code: otp,
+      is_used: false,
+    });
+
+    // Send via email (comment out if not ready)
+    await this.mailService.sendOtp(email, otp, 'login');
+    console.log(`OTP for ${email}: ${otp}`); // for demo only
+
+    // For production, DO NOT return the code in the response
+    return { message: 'Verification code sent' };
+  }
+
+  // Generate a 5-digit code that does not currently exist
+  private async generateOtpCode(): Promise<number> {
+    while (true) {
+      const otp = this.getRandomCode();
+      const exists = await this.codeRepo.findOne({ where: { code: otp } });
+      if (!exists) return otp;
     }
   }
 
-  async generateOtpCode() {
-    //generate 5 digit code that is not exist in database
-    let code: number | null = null;
-    while (!code) {
-      const fiveDigitCode = this.getRandomCode();
-      const checkCode = await this.code_repository.findOne({
-        where: {
-          code: fiveDigitCode,
-        },
-      });
-      if (!checkCode) {
-        code = fiveDigitCode;
-        break;
-      }
-    }
-    return code;
-  }
-
-  getRandomCode() {
+  private getRandomCode(): number {
     const min = 10000;
     const max = 99999;
-    const otp = Math.floor(Math.random() * (max - min + 1)) + min;
-    return otp;
+    return Math.floor(Math.random() * (max - min + 1)) + min;
   }
 }

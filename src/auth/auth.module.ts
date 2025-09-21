@@ -7,6 +7,7 @@ import { UsersService } from 'src/users/users.service';
 import { JwtModule } from '@nestjs/jwt';
 import { JwtStrategy } from './strategies/jwt.strategy';
 import Codes from 'src/entities/codes.entity';
+import { MailModule } from 'src/mail/mail.module';
 
 @Module({
   imports: [
@@ -15,6 +16,7 @@ import Codes from 'src/entities/codes.entity';
       signOptions: { expiresIn: '1d' },
     }),
     TypeOrmModule.forFeature([Users, Codes]),
+    MailModule,
   ],
   controllers: [AuthController],
   providers: [AuthService, UsersService, JwtStrategy],

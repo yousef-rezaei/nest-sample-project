@@ -7,6 +7,7 @@ import { LoggerMiddleware } from './logger/logger.middleware';
 import { TypeOrmModule } from '@nestjs/typeorm';
 import { AuthModule } from './auth/auth.module';
 import Users from './entities/user.entity';
+import { ConfigModule, ConfigService } from '@nestjs/config';
 import {
   AcceptLanguageResolver,
   HeaderResolver,
@@ -14,8 +15,41 @@ import {
   QueryResolver,
 } from 'nestjs-i18n';
 import path from 'path';
+
+import { MailerModule } from '@nestjs-modules/mailer';
+import { EjsAdapter } from '@nestjs-modules/mailer/dist/adapters/ejs.adapter';
+import { MailModule } from './mail/mail.module';
+
+// lpad data from .env file
+import * as dotenv from 'dotenv';
+dotenv.config();
+
 @Module({
   imports: [
+    ConfigModule.forRoot({ isGlobal: true }),
+    // ⬇️ HERE: Mailer configuration with debug logs
+    MailerModule.forRootAsync({
+      inject: [ConfigService],
+      useFactory: (cfg: ConfigService) => ({
+        transport: {
+          host: cfg.get('SMTP_HOST'),
+          port: Number(cfg.get('SMTP_PORT')),
+          secure: cfg.get('SMTP_SECURE') === 'true',
+          auth: { user: cfg.get('SMTP_USER'), pass: cfg.get('SMTP_PASS') },
+
+          // Debugging for SMTP handshake + send result
+          logger: true,
+          debug: true,
+          // tls: { rejectUnauthorized: false }, // enable only if you see TLS trust errors
+        },
+        defaults: { from: cfg.get('MAIL_FROM') },
+        template: {
+          dir: path.join(process.cwd(), 'src', 'mail', 'templates'),
+          adapter: new EjsAdapter(),
+          options: { strict: false },
+        },
+      }),
+    }),
     I18nModule.forRoot({
       fallbackLanguage: 'en',
       loaderOptions: {
@@ -42,6 +76,7 @@ import path from 'path';
     UsersModule,
     ProductsModule,
     AuthModule,
+    MailModule,
   ],
   controllers: [AppController],
   providers: [AppService],

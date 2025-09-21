@@ -17,6 +17,7 @@ export class AuthController {
   @Post('login')
   async login(@Body() dto: LoginAuthDto, @I18n() i18n: I18nContext) {
     const result = await this.authService.login(dto);
-    return { message: i18n.t('tr.auth.login.success'), ...result }; // ← localized
+    // return { message: i18n.t('tr.auth.login.success'), ...result }; // ← localized
+    return { ...result, message: i18n.t('tr.auth.login.success') };
   }
 }
