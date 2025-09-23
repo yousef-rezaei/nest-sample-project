@@ -1,59 +1,47 @@
-// import { IsEmail, IsNotEmpty, IsOptional } from 'class-validator';
-
-// export class LoginAuthDto {
-//   @IsEmail()
-//   email: string;
-//   // @IsNotEmpty()
-//   // password: string;
-//   @IsOptional()
-//   code: number;
-// }
+import { ApiProperty, ApiPropertyOptional } from '@nestjs/swagger';
 import {
   IsEmail,
   IsNotEmpty,
+  IsInt,
+  Min,
+  Max,
   IsOptional,
-  IsString,
-  MinLength,
-  Matches,
-  ValidateIf,
-  IsNumber,
 } from 'class-validator';
 import { i18nValidationMessage } from 'nestjs-i18n';
+import { Type } from 'class-transformer';
 
 export class LoginAuthDto {
   // required email
   @IsEmail({}, { message: i18nValidationMessage('forms.validation.email') })
   @IsNotEmpty({
-    message: i18nValidationMessage('forms.validation.required', {
-      field: 'Email',
-    }),
+    message: i18nValidationMessage('forms.validation.required', { field: 'Email' }),
+  })
+  @ApiProperty({
+    description: 'User email address',
+    example: 'user@example.com',
+    format: 'email',
   })
   email: string;
 
-  // // password required iff no code
-  // @ValidateIf((o) => !o.code)
-  // @IsString()
-  // @IsNotEmpty({
-  //   message: i18nValidationMessage('forms.validation.required', {
-  //     field: 'Password',
-  //   }),
-  // })
-  // @MinLength(8, {
-  //   message: i18nValidationMessage('forms.validation.minLength', {
-  //     field: 'Password',
-  //     min: 8,
-  //   }),
-  // })
-  // password?: string;
-
-  // 6-digit OTP required iff no password (string to keep leading zeros)
-  // @ValidateIf((o) => !o.password)
+  // optional 5-digit OTP (your backend sends OTP if this is absent)
   @IsOptional()
-  @IsNumber()
-  @IsNotEmpty({
-    message: i18nValidationMessage('forms.validation.required', {
-      field: 'Code',
-    }),
+  @Type(() => Number)
+  @IsInt({
+    message: i18nValidationMessage('forms.validation.number', { field: 'Code' }),
   })
-  code: number;
+  @Min(10000, {
+    message: i18nValidationMessage('forms.validation.min', { field: 'Code', min: 10000 }),
+  })
+  @Max(99999, {
+    message: i18nValidationMessage('forms.validation.max', { field: 'Code', max: 99999 }),
+  })
+  @ApiPropertyOptional({
+    description: '5-digit one-time code (enter this when verifying login). If omitted, an OTP will be emailed.',
+    type: Number,
+    minimum: 10000,
+    maximum: 99999,
+    example: 12345,
+    nullable: true,
+  })
+  code?: number;
 }

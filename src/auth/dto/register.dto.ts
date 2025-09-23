@@ -9,6 +9,7 @@ import {
 } from 'class-validator';
 import { i18nValidationMessage } from 'nestjs-i18n';
 import { Type } from 'class-transformer';
+import { ApiProperty, ApiPropertyOptional } from '@nestjs/swagger';
 
 export class RegisterAuthDto {
   // required email
@@ -17,6 +18,11 @@ export class RegisterAuthDto {
     message: i18nValidationMessage('forms.validation.required', {
       field: 'Email',
     }),
+  })
+  @ApiProperty({
+    description: 'User email address',
+    example: 'user@example.com',
+    format: 'email',
   })
   email: string;
 
@@ -33,6 +39,12 @@ export class RegisterAuthDto {
       min: 2,
     }),
   })
+  @ApiProperty({
+    description: 'First name of the user',
+    minLength: 2,
+    maxLength: 50,
+    example: 'Yousef',
+  })
   first_name: string;
 
   // required last name
@@ -47,6 +59,12 @@ export class RegisterAuthDto {
       field: 'Last name',
       min: 2,
     }),
+  })
+  @ApiProperty({
+    description: 'Last name of the user',
+    minLength: 2,
+    maxLength: 50,
+    example: 'Rezaeimirghaed',
   })
   last_name: string;
 
@@ -67,6 +85,13 @@ export class RegisterAuthDto {
       min: 0,
     }),
   })
+  @ApiPropertyOptional({
+    description: 'Age in years (optional)',
+    type: Number,
+    minimum: 0,
+    example: 28,
+    nullable: true,
+  })
   age?: number;
 
   // required password (>=8)
@@ -81,6 +106,12 @@ export class RegisterAuthDto {
       field: 'Password',
       min: 8,
     }),
+  })
+  @ApiProperty({
+    description: 'Password (min 8 characters)',
+    minLength: 8,
+    example: 'Secret123!',
+    format: 'password',
   })
   password: string;
 }

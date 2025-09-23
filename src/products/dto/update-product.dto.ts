@@ -1,5 +1,6 @@
-import { PartialType } from '@nestjs/mapped-types';
+// update-product.dto.ts
+import { PartialType } from '@nestjs/swagger';   // ← use this
 import { CreateProductDto } from './create-product.dto';
 
-// Fields become optional; i18n messages from CreateProductDto still apply.
+// All fields become optional; Swagger metadata & i18n validations are preserved.
 export class UpdateProductDto extends PartialType(CreateProductDto) {}
