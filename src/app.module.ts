@@ -18,6 +18,7 @@ import path from 'path';
 import { MailerModule } from '@nestjs-modules/mailer';
 import { EjsAdapter } from '@nestjs-modules/mailer/dist/adapters/ejs.adapter';
 import { MailModule } from './mail/mail.module';
+import { ServeStaticModule } from '@nestjs/serve-static';
 
 // lpad data from .env file
 import * as dotenv from 'dotenv';
@@ -25,6 +26,15 @@ dotenv.config();
 
 @Module({
   imports: [
+    ServeStaticModule.forRoot({
+      rootPath: path.join(__dirname, '../', 'static'),
+    }),
+    // ⬇️ add this for uploaded files
+    ServeStaticModule.forRoot({
+      rootPath: path.join(process.cwd(), 'uploads'),
+      serveRoot: '/uploads',
+      exclude: ['/auth*', '/products*', '/users*', '/docs*', '/health'],
+    }),
     ConfigModule.forRoot({ isGlobal: true }),
     // ⬇️ HERE: Mailer configuration with debug logs
     MailerModule.forRootAsync({

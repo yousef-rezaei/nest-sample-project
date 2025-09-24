@@ -19,4 +19,7 @@ export default class Users {
 
   @Column({ nullable: false })
   password: string;
+
+  @Column({ type: 'varchar', length: 255, nullable: true, default: null })
+  avatar?: string | null; // filename only, e.g., "42-1695412345678.webp"
 }

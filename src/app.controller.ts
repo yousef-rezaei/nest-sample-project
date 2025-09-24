@@ -35,7 +35,12 @@ export class AppController {
   @ApiResponse({
     status: 302,
     description: 'Found. Redirect to /docs',
-    headers: { Location: { description: 'Swagger UI', schema: { type: 'string', example: '/docs' } } },
+    headers: {
+      Location: {
+        description: 'Swagger UI',
+        schema: { type: 'string', example: '/docs' },
+      },
+    },
   })
   @Redirect('/docs', 302)
   root() {}
